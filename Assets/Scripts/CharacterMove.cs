@@ -24,7 +24,7 @@ public class CharacterMove : MonoBehaviour
     private float timer = 0.5f;
 
     private bool isSlider = false;
-    private bool isJumping = false;
+    public bool isJumping = false;
 
     private void Awake() {
         transformPerson = transform;
