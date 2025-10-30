@@ -7,7 +7,7 @@ public class CharHp : MonoBehaviour
 {
     Image RedHpImg;
     Image GreenHpImg;
-    float CurHp = 100;
+    public float CurHp = 100;
     float CurDamage = 0;
     void Start()
     {
@@ -19,14 +19,21 @@ public class CharHp : MonoBehaviour
     {
         CurHp += hill;
         CurDamage -= hill;
+        UpdateUiHp();
+    }
+
+    private void UpdateUiHp()
+    {
+        CurHp = Mathf.Clamp(CurHp, 0, 100);
+        CurDamage = Mathf.Clamp(CurDamage, 0, 100);
         GreenHpImg.fillAmount = CurHp / 100;
         RedHpImg.fillAmount = CurDamage / 100;
     }
+
     public void TakeDamage(float damage)
     {
         CurHp -= damage;
         CurDamage += damage;
-        GreenHpImg.fillAmount = CurHp / 100;
-        RedHpImg.fillAmount = CurDamage / 100;
+        UpdateUiHp();
     }
 }
