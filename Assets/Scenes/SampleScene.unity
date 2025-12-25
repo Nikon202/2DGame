@@ -10170,6 +10170,10 @@ PrefabInstance:
       propertyPath: trPerson
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2583759660896996396, guid: 81bbb0489457c2d4d8bdf97aa35c3277, type: 3}
+      propertyPath: m_SortingOrder
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4154975214003479181, guid: 81bbb0489457c2d4d8bdf97aa35c3277, type: 3}
       propertyPath: m_LocalPosition.x
       value: 69.13258
@@ -29729,6 +29733,10 @@ PrefabInstance:
       propertyPath: startPointBullet
       value: 
       objectReference: {fileID: 274336520}
+    - target: {fileID: 3586339077167757853, guid: 3be3ff2b64275664c96660f832d27074, type: 3}
+      propertyPath: m_SortingOrder
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 8755693247765942575, guid: 3be3ff2b64275664c96660f832d27074, type: 3}
       propertyPath: m_Name
       value: Character
@@ -29821,7 +29829,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 31
   m_Sprite: {fileID: 21300002, guid: 7c87a90a60c169341962541933c9b381, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
