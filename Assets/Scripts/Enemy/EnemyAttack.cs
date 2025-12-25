@@ -5,6 +5,7 @@ using System;
 
 public class EnemyAttack : MonoBehaviour
 {
+    bool isCollision = false;
     CharHp charHp;
     bool isAttack;
     
@@ -27,7 +28,7 @@ public class EnemyAttack : MonoBehaviour
  {
      float dist = Vector2.Distance(trPerson.position, trEnemy.position);
         IsMinDistance(dist);
-        if (isAttack && timer < Time.time)
+        if (isAttack && timer < Time.time && isCollision)
         {
             timer = Time.time + interval;
             charHp.TakeDamage(damage);
@@ -38,4 +39,18 @@ public class EnemyAttack : MonoBehaviour
      isAttack = minDistanceAttack >= dist;
         onAttackAnim?.Invoke(isAttack); 
  }
+ void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            isCollision = true;
+        }
+    }
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            isCollision = false;
+        }
+    }
 }

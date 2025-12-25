@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyAnim : MonoBehaviour
 {
+    EnemyHp hp;
 EnemyAttack attack;
 private EnemyMove zombyMove;
     private Animator animator;
@@ -13,18 +14,19 @@ private EnemyMove zombyMove;
         zombyMove = GetComponent<EnemyMove>();
         animator = GetComponent<Animator>();
         attack = GetComponent<EnemyAttack>();
+        hp = GetComponent<EnemyHp>();
     }
     private void OnEnable()
     {
         zombyMove.onMoveZomby += MoveAnim;
         attack.onAttackAnim += AttackedAnim;
-        zombyMove.onDeadeZomby += DeadeAnim;
+        hp.onDeadeZomby += DeadeAnim;
     }
     private void OnDisable()
     {
         zombyMove.onMoveZomby -= MoveAnim;
         attack.onAttackAnim -= AttackedAnim;
-        zombyMove.onDeadeZomby -= DeadeAnim;
+        hp.onDeadeZomby -= DeadeAnim;
     }
 private void MoveAnim(float horizontal)
     {
@@ -34,8 +36,8 @@ private void MoveAnim(float horizontal)
     {
         animator.SetBool("IsAttack", isAttack);
     }
-    private void DeadeAnim(bool isDeade)
+    private void DeadeAnim()
     {
-        animator.SetBool("DeadTr", isDeade);
+        animator.SetTrigger("DeadTr");
     }
 }

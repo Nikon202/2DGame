@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class EnemyHp : MonoBehaviour
 {
+    public event Action onDeadeZomby;
     Image RedHpImg;
     Image GreenHpImg;
     public float CurHp = 100;
@@ -30,7 +32,10 @@ public class EnemyHp : MonoBehaviour
         CurDamage = Mathf.Clamp(CurDamage, 0, 100);
         GreenHpImg.fillAmount = CurHp / 100;
         RedHpImg.fillAmount = CurDamage / 100;
-
+        if (CurHp <= 0)
+        {
+            onDeadeZomby?.Invoke();
+        }
     }
 
     public void TakeDamage(float damage)

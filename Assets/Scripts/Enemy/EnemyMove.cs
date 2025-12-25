@@ -5,11 +5,12 @@ using System;
 
 public class EnemyMove : MonoBehaviour
 {
+    EnemyHp hp;
     public event Action<float> onMoveZomby;
-    public event Action<bool> onDeadeZomby;
     [SerializeField] private Transform trPerson;
     private Transform trZomby;
     private Rigidbody2D rbZomby;
+    private Collider2D col;
 
     public float speed = 5f;
     public float scale = 1f;
@@ -20,16 +21,23 @@ public class EnemyMove : MonoBehaviour
     private bool isJumping = false; 
     private bool isJumpWait = false;
     private bool isFollow = false;
+    bool isStop = false;
 
     private float timer = 4f;
     private float distance = 0f;
-void Awake()
-    {
-        rbZomby = GetComponent<Rigidbody2D>();
-        trZomby = GetComponent<Transform>();
-    }
-    private void Start()
-    {
+    void Awake()
+        {
+            rbZomby = GetComponent<Rigidbody2D>();
+            trZomby = GetComponent<Transform>();
+            hp = GetComponent<EnemyHp>();
+            col = GetComponent<Collider2D>();
+        }
+    void OnEnable()
+        {
+            hp.onDeadeZomby += StopMove;
+        }
+        private void Start()
+        {
         trPerson = FindObjectOfType<CharacterMove>().transform;
         trZomby.position = new Vector3(scale, scale, scale);
         StartCoroutine(JumpingCoroutine());
@@ -37,10 +45,12 @@ void Awake()
     private void OnDisable()
     {
         StopCoroutine(JumpingCoroutine());
+        hp.onDeadeZomby -= StopMove;
     }
 
     void Update()
     {
+        if (isStop) return;
         CheckDistance();
         if (distance <= 15f)
         {
@@ -55,10 +65,17 @@ void Awake()
         if (isJumping && isJumpWait) Jumping();
         ScaleDirection();
     }
-private void CheckDistance()
+    void StopMove()
     {
-        distance = Vector2.Distance(trZomby.position, trPerson.position);
+        rbZomby.isKinematic = true;
+        col.enabled = false;
+        rbZomby.velocity = Vector3.zero;
+        isStop = true;
     }
+    private void CheckDistance()
+        {
+            distance = Vector2.Distance(trZomby.position, trPerson.position);
+        }
     private void Follow()
     {
         Vector2 direction = trPerson.position - trZomby.position;
@@ -77,12 +94,12 @@ private void CheckDistance()
         rbZomby.velocity = new Vector2(moveInput * speed, rbZomby.velocity.y);
         onMoveZomby?.Invoke(Mathf.Abs(moveInput));
     }
-private void Jumping()
-    {
-        rbZomby.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        isJumping = false;
-        isJumpWait = false; 
-    }
+    private void Jumping()
+        {
+            rbZomby.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            isJumping = false;
+            isJumpWait = false; 
+        }
 
     private IEnumerator JumpingCoroutine()
     {
@@ -96,16 +113,16 @@ private void Jumping()
             }
         }
     }
-private void ScaleDirection()
-    {
-        if (moveInput < 0f)
+    private void ScaleDirection()
         {
-            transform.localScale = new Vector3(-scale,scale, scale);
-        }
-        else if (moveInput > 0f)
-        {
-            transform.localScale = new Vector3(scale,scale, scale);
-        }
+            if (moveInput < 0f)
+            {
+                transform.localScale = new Vector3(-scale,scale, scale);
+            }
+            else if (moveInput > 0f)
+            {
+                transform.localScale = new Vector3(scale,scale, scale);
+            }
 
     }
     private void OnCollisionStay2D(Collision2D collision)
