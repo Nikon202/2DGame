@@ -13,7 +13,7 @@ public class EnemyMove : MonoBehaviour
     private Collider2D col;
 
     public float speed = 5f;
-    public float scale = 1f;
+    public float scale = 0.5f;
     public float jumpForce = 6f;
     private float moveInput = 1f;
     private Vector3 currentPoint;
